@@ -9,10 +9,11 @@ from utils.utils import parseLectureName, parseLectureStatus, getCurrentDate, ch
 app = FastAPI()
 
 class Course(BaseModel):
+    student_id: str
+    dept_id: str
+    course_name: str
     course_id: str
     class_id: str
-    dept_id: str
-    student_id: str
 
 class Courses(BaseModel):
     courses: Union[List[Course], None] = None
@@ -42,7 +43,9 @@ def get_lectures(courses: Courses):
             })
         thisWeekUnpassCount, allUnpassCount = checkStatusCounter(result)
         course_result = {
+            "course_name": course.course_name,
             "course_id": course.course_id,
+            "class_id": course.class_id,
             "unpass_count": {
                 "this_week": thisWeekUnpassCount,
                 "all": allUnpassCount
